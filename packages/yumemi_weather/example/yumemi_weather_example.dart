@@ -24,4 +24,20 @@ void main() {
   } on YumemiWeatherError catch (e) {
     print('Throws: $e');
   }
+
+  try {
+    final jsonString = '''
+{
+    "area": "tokyo",
+    "date": "2020-04-01T12:00:00+09:00"
+}''';
+    final weeklyWeather = yumemiWeather.syncFetchWeeklyWeather(jsonString);
+    print('##### Weekly Weather #####');
+    for (var weather in weeklyWeather) {
+      print('Weather: $weather');
+    }
+    print('######################');
+  } on YumemiWeatherError catch (e) {
+    print('Throws: $e');
+  }
 }
