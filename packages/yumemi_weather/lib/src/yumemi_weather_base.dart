@@ -164,4 +164,33 @@ class YumemiWeather {
     sleep(apiDuration);
     return fetchWeather(jsonString);
   }
+
+  List<String> syncFetchWeeklyWeather(String jsonString) {
+    sleep(apiDuration);
+    return fetchWeeklyWeather(jsonString);
+  }
+
+  List<String> fetchWeeklyWeather(String jsonString) {
+    final Request request;
+    try {
+      final json = jsonDecode(jsonString);
+      request = Request.fromJson(json);
+    } catch (_) {
+      throw YumemiWeatherError.invalidParameter;
+    }
+
+    final randomInt = Random().range(0, 4);
+    if (randomInt == 4) {
+      throw YumemiWeatherError.unknown;
+    }
+    final response = List.generate(
+      7,
+      (index) => _makeRandomResponse(
+        date: request.date.add(
+          Duration(days: index),
+        ),
+      ),
+    );
+    return response.map((e) => jsonEncode(e)).toList();
+  }
 }
